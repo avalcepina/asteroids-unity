@@ -240,6 +240,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad37bb29997a1e42bec38a2a9f8910a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 7197914473714298573, guid: 8eb40b35aef892e459e09dc8fdb0004d, type: 3}
+  asteroid: {fileID: 2312236604702372687, guid: 3c558bb5e22ca3545abc437b32da21d2,
+    type: 3}
 --- !u!4 &777301439
 Transform:
   m_ObjectHideFlags: 0

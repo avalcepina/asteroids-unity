@@ -9,7 +9,8 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public GameObject asteroid;
 
-    float maxRange = 10f;
+    float maxRange = 20f;
+    float minRange = 10f;
     float maximumScale = 10f;
     float minimumScale = 5f;
     float spawnInterval = 5f;
@@ -21,9 +22,6 @@ public class GameController : MonoBehaviour
 
         Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(0, 180, 0));
 
-
-        InstantiateRandomAsteroid();
-        InstantiateRandomAsteroid();
     }
 
     void InstantiateRandomAsteroid()
@@ -37,19 +35,29 @@ public class GameController : MonoBehaviour
         while (targetPending)
         {
 
-            float minimumZ = Camera.main.ScreenToWorldPoint(new Vector2(0, 0)).y;
-            float maximumZ = Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.height)).y;
+            float minimumZ = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).z;
+            float maximumZ = Camera.main.ViewportToWorldPoint(new Vector2(0, Screen.height)).z;
 
 
-            float minimumX = Camera.main.ScreenToWorldPoint(new Vector2(0, 0)).x;
-            float maximumX = Camera.main.ScreenToWorldPoint(new Vector2(0, Screen.width)).x;
+            float minimumX = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x;
+            float maximumX = Camera.main.ViewportToWorldPoint(new Vector2(0, Screen.height)).x;
 
-            Range[] rangesZ = new Range[] { new Range(minimumZ - maxRange, minimumZ), new Range(maximumZ, maximumZ + maxRange) };
-            Range[] rangesX = new Range[] { new Range(minimumX - maxRange, minimumX), new Range(maximumX, maximumX + maxRange) };
+            if (UnityEngine.Random.value > 0.5f)
+            {
 
-            spawnX = RandomValueFromRanges(rangesX);
-            spawnZ = RandomValueFromRanges(rangesZ);
+                Range[] rangesX = new Range[] { new Range(minimumX - maxRange, minimumX - minRange), new Range(maximumX + minRange, maximumX + maxRange) };
+                spawnX = RandomValueFromRanges(rangesX);
+                spawnZ = UnityEngine.Random.Range(minimumZ - maxRange, maximumZ + maxRange);
+            }
+            else
+            {
 
+                Range[] rangesZ = new Range[] { new Range(minimumZ - maxRange, minimumZ - minRange), new Range(maximumZ + minRange, maximumZ + maxRange) };
+                spawnX = UnityEngine.Random.Range(minimumX - maxRange, maximumX + maxRange);
+                spawnZ = RandomValueFromRanges(rangesZ);
+            }
+
+            // Avoiding spawning 2 asteroids ont op of each other
             Collider[] colliders = Physics.OverlapBox(new Vector3(spawnX, 0, spawnZ), new Vector3(1, 1, 1));
 
             targetPending = colliders.Length > 0;

@@ -16,13 +16,15 @@ public class GameController : MonoBehaviour
     float spawnInterval = 5f;
     float time = 0.0f;
     public Vector3 screenCenter;
+    public float teleportingCooldown = 0.5f;
+    private float teleportingTimer;
 
-    // Start is called before the first frame update
     void Start()
     {
 
-        Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(0, 180, 0));
-        screenCenter = Camera.main.ViewportToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
+        player = Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(0, 180, 0));
+        screenCenter = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
+
     }
 
     public Vector3 GetNewPosition(Vector3 position)
@@ -32,8 +34,34 @@ public class GameController : MonoBehaviour
 
     }
 
+    bool FindPlayer()
+    {
+
+        Collider[] colliders = player.GetComponents<Collider>();
+
+        Collider collider;
+
+        if (colliders[0].isTrigger)
+        {
+            collider = colliders[0];
+        }
+        else
+        {
+            collider = colliders[1];
+        }
+
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        if (GeometryUtility.TestPlanesAABB(planes, collider.bounds))
+            return true;
+        else
+            return false;
+
+    }
+
     void InstantiateRandomAsteroid()
     {
+
 
         bool targetPending = true;
 
@@ -82,6 +110,13 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (!FindPlayer())
+        {
+
+            player.transform.position = GetNewPosition(player.transform.position);
+
+        }
 
 
         time += Time.deltaTime;

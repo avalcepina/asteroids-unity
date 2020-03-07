@@ -47,11 +47,4 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void OnBecameInvisible()
-    {
-        Debug.Log("Player became invisible");
-
-        transform.position = gameController.GetNewPosition(transform.position);
-    }
-
 }

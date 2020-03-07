@@ -287,6 +287,7 @@ MonoBehaviour:
   player: {fileID: 7197914473714298573, guid: 8eb40b35aef892e459e09dc8fdb0004d, type: 3}
   asteroid: {fileID: 2312236604702372687, guid: 3c558bb5e22ca3545abc437b32da21d2,
     type: 3}
+  mainCamera: {fileID: 960573429}
   screenCenter: {x: 0, y: 0, z: 0}
 --- !u!4 &777301439
 Transform:

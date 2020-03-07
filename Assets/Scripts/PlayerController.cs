@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    public GameController gameController;
     public float rotationSpeed;
     public float movementSpeed;
     public GameObject laser;
@@ -14,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
@@ -44,6 +45,13 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
             transform.Rotate(Vector3.up * rotationSpeed * Time.deltaTime);
 
+    }
+
+    void OnBecameInvisible()
+    {
+        Debug.Log("Player became invisible");
+
+        transform.position = gameController.GetNewPosition(transform.position);
     }
 
 }

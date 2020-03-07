@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7779643255124705562}
   - component: {fileID: 4948035799134886340}
   - component: {fileID: 2939503187266572251}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 40
+  damage: 40
 --- !u!23 &2939503187266572251
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -126,7 +127,7 @@ GameObject:
   - component: {fileID: 3825909155328754125}
   - component: {fileID: 3825909155328754126}
   - component: {fileID: 3825909155328754127}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InnerLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +204,7 @@ GameObject:
   - component: {fileID: 3825909156474424190}
   - component: {fileID: 3825909156474424191}
   - component: {fileID: 3825909156474424184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OuterLayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

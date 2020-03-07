@@ -6,6 +6,8 @@ public class LaserBehaviour : MonoBehaviour
 {
     public float speed;
 
+    public int damage = 40;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,5 +23,21 @@ public class LaserBehaviour : MonoBehaviour
     void OnBecameInvisible()
     {
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        Debug.Log("Entering collision");
+
+        HealthController healthController = other.gameObject.GetComponent<HealthController>();
+
+        if (healthController != null)
+        {
+            healthController.DealDamage(damage);
+        }
+
+        GameObject.Destroy(gameObject);
+
     }
 }

@@ -15,12 +15,20 @@ public class GameController : MonoBehaviour
     float minimumScale = 5f;
     float spawnInterval = 5f;
     float time = 0.0f;
+    public Vector3 screenCenter;
 
     // Start is called before the first frame update
     void Start()
     {
 
         Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(0, 180, 0));
+        screenCenter = Camera.main.ViewportToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
+    }
+
+    public Vector3 GetNewPosition(Vector3 position)
+    {
+
+        return new Vector3(screenCenter.x - position.x, 0, screenCenter.z - position.z);
 
     }
 

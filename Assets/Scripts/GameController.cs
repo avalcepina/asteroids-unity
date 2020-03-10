@@ -130,17 +130,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    public struct Range
-    {
-        public float min;
-        public float max;
-        public float range { get { return max - min + 1; } }
-        public Range(float aMin, float aMax)
-        {
-            min = aMin; max = aMax;
-        }
-    }
-
     public static float RandomValueFromRanges(Range[] ranges)
     {
         if (ranges.Length == 0)

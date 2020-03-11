@@ -47,4 +47,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    void OnDestroy()
+    {
+
+        gameController.PlayerDies();
+    }
+
 }

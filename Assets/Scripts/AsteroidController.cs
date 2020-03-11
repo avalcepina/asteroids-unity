@@ -8,11 +8,11 @@ public class AsteroidController : MonoBehaviour
     public int damage;
     public float damageCooldown = 0.5f;
     public float currentTime;
+    public GameController gameController;
+    public int scoreValue = 100;
 
     void Start()
     {
-
-        transform.LookAt(new Vector3(0, 0, 0));
         GetComponent<Rigidbody>().AddForce(transform.forward * 100f);
 
         Vector3 torque;
@@ -57,6 +57,12 @@ public class AsteroidController : MonoBehaviour
 
         }
 
+    }
+
+    void OnDestroy()
+    {
+
+        gameController.IncreaseScore(scoreValue);
     }
 
 }

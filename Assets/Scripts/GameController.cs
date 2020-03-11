@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -9,28 +11,68 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public GameObject asteroid;
 
-    float maxRange = 20f;
-    float minRange = 10f;
-    float maximumScale = 10f;
-    float minimumScale = 5f;
-    float spawnInterval = 5f;
-    float time = 0.0f;
+    public float maxRange = 10f;
+    public float minRange = 5f;
+    public float maximumScale = 10f;
+    public float minimumScale = 5f;
+    public float spawnInterval = 3f;
+
+    public float gameOverDelay = 1f;
+    public float gameOverExpire = 10f;
+
+    public GameObject scoreValue;
     public Vector3 screenCenter;
-    public float teleportingCooldown = 0.5f;
-    private float teleportingTimer;
+    public GameObject gamePanel;
+    public GameObject gameOverPanel;
+
+    bool isPlayerAlive;
+    float time = 0.0f;
+    float minimumY;
+    float maximumY;
+    float minimumX;
+    float maximumX;
 
     void Start()
     {
 
-        player = Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(0, 180, 0));
-        screenCenter = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width / 2, Screen.height / 2));
+        gameOverPanel.SetActive(false);
+        gamePanel.SetActive(true);
+
+        player = Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
+        screenCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+
+        isPlayerAlive = true;
+
+        this.minimumY = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, -Camera.main.transform.position.z)).y;
+        this.maximumY = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, -Camera.main.transform.position.z)).y;
+        this.minimumX = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, -Camera.main.transform.position.z)).x;
+        this.maximumX = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, -Camera.main.transform.position.z)).x;
+
+
+    }
+
+    public void IncreaseScore(int score)
+    {
+
+        scoreValue.GetComponent<Text>().text = (Int64.Parse(scoreValue.GetComponent<Text>().text) + score).ToString();
+
+    }
+
+
+    public void PlayerDies()
+    {
+
+        isPlayerAlive = false;
+        gameOverPanel.SetActive(true);
+        gamePanel.SetActive(false);
+        time = 0.0f;
 
     }
 
     public Vector3 GetNewPosition(Vector3 position)
     {
 
-        return new Vector3(screenCenter.x - position.x, 0, screenCenter.z - position.z);
+        return new Vector3(screenCenter.x - position.x, screenCenter.y - position.y, 0);
 
     }
 
@@ -66,41 +108,36 @@ public class GameController : MonoBehaviour
         bool targetPending = true;
 
         float spawnX = 0;
-        float spawnZ = 0;
+        float spawnY = 0;
 
         while (targetPending)
         {
-
-            float minimumZ = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).z;
-            float maximumZ = Camera.main.ViewportToWorldPoint(new Vector2(0, Screen.height)).z;
-
-
-            float minimumX = Camera.main.ViewportToWorldPoint(new Vector2(0, 0)).x;
-            float maximumX = Camera.main.ViewportToWorldPoint(new Vector2(0, Screen.height)).x;
 
             if (UnityEngine.Random.value > 0.5f)
             {
 
                 Range[] rangesX = new Range[] { new Range(minimumX - maxRange, minimumX - minRange), new Range(maximumX + minRange, maximumX + maxRange) };
                 spawnX = RandomValueFromRanges(rangesX);
-                spawnZ = UnityEngine.Random.Range(minimumZ - maxRange, maximumZ + maxRange);
+                spawnY = UnityEngine.Random.Range(minimumY - maxRange, maximumY + maxRange);
             }
             else
             {
 
-                Range[] rangesZ = new Range[] { new Range(minimumZ - maxRange, minimumZ - minRange), new Range(maximumZ + minRange, maximumZ + maxRange) };
+                Range[] rangesY = new Range[] { new Range(minimumY - maxRange, minimumY - minRange), new Range(maximumY + minRange, maximumY + maxRange) };
                 spawnX = UnityEngine.Random.Range(minimumX - maxRange, maximumX + maxRange);
-                spawnZ = RandomValueFromRanges(rangesZ);
+                spawnY = RandomValueFromRanges(rangesY);
             }
 
             // Avoiding spawning 2 asteroids ont op of each other
-            Collider[] colliders = Physics.OverlapBox(new Vector3(spawnX, 0, spawnZ), new Vector3(1, 1, 1));
+            Collider[] colliders = Physics.OverlapBox(new Vector3(spawnX, spawnY, 0), new Vector3(1, 1, 1));
 
             targetPending = colliders.Length > 0;
 
         }
 
-        GameObject asteroidObject = Instantiate(asteroid, new Vector3(spawnX, 0, spawnZ), Quaternion.Euler(0, 0, 0));
+        GameObject asteroidObject = Instantiate(asteroid, new Vector3(spawnX, spawnY, 0), Quaternion.Euler(0, 0, 0));
+        asteroidObject.GetComponent<AsteroidController>().gameController = this;
+        asteroidObject.transform.LookAt(screenCenter);
         float scale = UnityEngine.Random.Range(minimumScale, maximumScale);
 
         asteroidObject.transform.localScale = new Vector3(scale, scale, scale);
@@ -111,21 +148,43 @@ public class GameController : MonoBehaviour
     void Update()
     {
 
-        if (!FindPlayer())
+        if (isPlayerAlive)
         {
 
-            player.transform.position = GetNewPosition(player.transform.position);
+            if (!FindPlayer())
+            {
+
+                player.transform.position = GetNewPosition(player.transform.position);
+
+            }
+
+
+            time += Time.deltaTime;
+
+            if (time >= spawnInterval)
+            {
+                time = time - spawnInterval;
+
+                InstantiateRandomAsteroid();
+            }
 
         }
-
-
-        time += Time.deltaTime;
-
-        if (time >= spawnInterval)
+        else
         {
-            time = time - spawnInterval;
 
-            InstantiateRandomAsteroid();
+            if (time < gameOverDelay)
+            {
+
+                time = time + Time.deltaTime;
+
+            }
+            else if (Input.anyKey || time > gameOverExpire)
+            {
+
+                SceneManager.LoadScene("MainMenuScene");
+
+            }
+
         }
 
     }

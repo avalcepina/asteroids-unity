@@ -9,7 +9,6 @@ public class AsteroidController : MonoBehaviour
     public float damageCooldown = 0.5f;
     public float currentTime;
     public GameController gameController;
-    public int scoreValue = 100;
 
     void Start()
     {
@@ -57,12 +56,6 @@ public class AsteroidController : MonoBehaviour
 
         }
 
-    }
-
-    void OnDestroy()
-    {
-
-        gameController.IncreaseScore(scoreValue);
     }
 
 }

@@ -136,7 +136,7 @@ public class GameController : MonoBehaviour
         }
 
         GameObject asteroidObject = Instantiate(asteroid, new Vector3(spawnX, spawnY, 0), Quaternion.Euler(0, 0, 0));
-        asteroidObject.GetComponent<AsteroidController>().gameController = this;
+        asteroidObject.GetComponent<HealthController>().gameController = this;
         asteroidObject.transform.LookAt(screenCenter);
         float scale = UnityEngine.Random.Range(minimumScale, maximumScale);
 

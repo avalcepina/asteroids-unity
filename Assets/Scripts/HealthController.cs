@@ -7,6 +7,8 @@ public class HealthController : MonoBehaviour
     private int currentHealth = 0;
     public GameObject explosion;
     private bool exploding = false;
+    public int scoreValue = 0;
+    public GameController gameController;
 
     void Start()
     {
@@ -23,6 +25,13 @@ public class HealthController : MonoBehaviour
         {
             exploding = true;
             GameObject explosionGo = Instantiate(explosion, transform.position, Quaternion.Euler(0, 0, 0));
+
+            if (scoreValue > 0)
+            {
+                gameController.IncreaseScore(scoreValue);
+
+            }
+
             Destroy(gameObject, 0.5f);
             Destroy(explosionGo, 1f);
 

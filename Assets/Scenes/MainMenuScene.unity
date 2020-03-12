@@ -996,13 +996,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57cd38ca2cdfe5b44ace734e8d95b131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRange: 20
-  minRange: 10
-  asteroid: {fileID: 2630662686774613032, guid: deb8943a44ea84249a064df670282718,
+  maxRange: 7
+  minRange: 3
+  asteroid: {fileID: 2312236604702372687, guid: 3c558bb5e22ca3545abc437b32da21d2,
     type: 3}
   maximumScale: 10
   minimumScale: 5
-  spawnInterval: 3
+  spawnInterval: 4
 --- !u!4 &1997867370
 Transform:
   m_ObjectHideFlags: 0

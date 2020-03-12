@@ -76,6 +76,8 @@ public class MainMenuController : MonoBehaviour
 
         asteroidObject.transform.localScale = new Vector3(scale, scale, scale);
 
+        asteroidObject.GetComponent<Rigidbody>().AddForce(-asteroidObject.transform.right * 100f);
+
     }
 
     public void StartGame()

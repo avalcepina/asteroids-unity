@@ -12,6 +12,8 @@ public class AsteroidController : MonoBehaviour
 
     void Start()
     {
+        gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+
         GetComponent<Rigidbody>().AddForce(transform.forward * 100f);
 
         Vector3 torque;

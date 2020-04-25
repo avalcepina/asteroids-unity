@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour
         gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
     }
 
+    void OnDestroy()
+    {
+
+        gameController.PlayerDies();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -47,10 +53,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void OnDestroy()
-    {
 
-        gameController.PlayerDies();
-    }
 
 }

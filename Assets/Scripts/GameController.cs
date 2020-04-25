@@ -34,10 +34,11 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-
+        // Setting the active panel
         gameOverPanel.SetActive(false);
         gamePanel.SetActive(true);
 
+        // Instantiating player
         player = Instantiate(player, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0));
         screenCenter = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 0));
 

@@ -25,9 +25,6 @@ public class MainMenuController : MonoBehaviour
         this.minimumX = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, -Camera.main.transform.position.z)).x;
         this.maximumX = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, -Camera.main.transform.position.z)).x;
 
-        Debug.Log("MC " + Camera.main.name);
-        Debug.Log("MinY " + minimumY + "MaxY " + maximumY);
-        Debug.Log("MinX " + minimumX + "MaxX " + maximumX);
     }
 
     // Update is called once per frame
